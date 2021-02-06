@@ -31,12 +31,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _accessToken = '';
+  int _cases = 0;
 
   void _updateAccessToken() async {
     final apiService = APIService(api: API.sandbox());
     final accessToken = await apiService.getAcessToken();
     setState(() {
       _accessToken = accessToken;
+    });
+  }
+
+  void _updateData() async {
+    final apiService = APIService(api: API.sandbox());
+
+    final accessToken = await apiService.getAcessToken();
+    final endpoint = Endpoint.cases;
+    final cases = await apiService.getEndpointData(accessToken, endpoint);
+    setState(() {
+      _cases = cases;
     });
   }
 
@@ -52,11 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         alignment: Alignment.center,
         child: Text(
-          'covid_data : $_accessToken',
+          'No. of cases: $_cases',
           style: Theme.of(context)
               .textTheme
               .headline4
-              .copyWith(fontWeight: FontWeight.bold, fontSize: 45),
+              .copyWith(fontWeight: FontWeight.bold, fontSize: 25),
         ),
       ),
       floatingActionButton: ElevatedButton(
@@ -64,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
             shadowColor: Colors.white54,
             backgroundColor: Colors.white,
             elevation: 10),
-        onPressed: () => _updateAccessToken(),
+        onPressed: () => _updateData(),
         child: Icon(
           Icons.face,
           color: Theme.of(context).primaryColorDark,
