@@ -40,7 +40,7 @@ class _DashBoardState extends State<DashBoard> {
         child: ListView(
           children: <Widget>[
             for (var endpoint in Endpoint.values)
-              EndpointDataCard(
+              EndpointCard(
                 // initally _endpointsData does not have any value
                 value: _endpointsData != null
                     ? _endpointsData.values[endpoint]
