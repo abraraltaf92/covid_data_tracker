@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:covid_data_tracker/app/services/api.dart';
+import 'package:flutter/foundation.dart';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:covid_data_tracker/services/api.dart';
 
 class APIService {
   final API api;
@@ -25,10 +25,10 @@ class APIService {
     throw response;
   }
 
-  Future<int> getEndpointData(
-    String accessToken,
-    Endpoint endpoint,
-  ) async {
+  Future<int> getEndpointData({
+    @required String accessToken,
+    @required Endpoint endpoint,
+  }) async {
     final uri = api.endpointUri(endpoint);
     final response = await http
         .get(uri.toString(), headers: {'Authorization': 'Bearer $accessToken'});
