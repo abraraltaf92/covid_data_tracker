@@ -1,4 +1,5 @@
 import 'package:covid_data_tracker/app/services/api.dart';
+import 'package:covid_data_tracker/app/services/endpoint_data.dart';
 import 'package:flutter/material.dart';
 
 class EndpointCardData {
@@ -10,7 +11,7 @@ class EndpointCardData {
 
 class EndpointCard extends StatelessWidget {
   final Endpoint endpoint;
-  final int value;
+  final EndpointData value;
   static Map<Endpoint, EndpointCardData> _cardTitles = {
     Endpoint.cases: EndpointCardData(
         title: 'Cases',
