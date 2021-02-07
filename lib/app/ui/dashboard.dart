@@ -1,4 +1,5 @@
 import 'package:covid_data_tracker/app/repositories/data_repository.dart';
+import 'package:covid_data_tracker/app/repositories/endpoints_data.dart';
 import 'package:covid_data_tracker/app/services/api.dart';
 import 'package:covid_data_tracker/app/ui/endpointData_card.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +10,14 @@ class DashBoard extends StatefulWidget {
   _DashBoardState createState() => _DashBoardState();
 }
 
-int _cases;
+EndpointsData _endpointsData;
 
 class _DashBoardState extends State<DashBoard> {
   Future<void> _updateData() async {
     final dataRepository = Provider.of<DataRepository>(context, listen: false);
-    final cases = await dataRepository.getEndpointData(Endpoint.cases);
+    final endpointsData = await dataRepository.getAllEndpointsData();
     setState(() {
-      _cases = cases;
+      _endpointsData = endpointsData;
     });
   }
 
@@ -34,12 +35,18 @@ class _DashBoardState extends State<DashBoard> {
       ),
       body: RefreshIndicator(
         onRefresh: _updateData,
+        color: Colors.black,
+        backgroundColor: Colors.white54,
         child: ListView(
           children: <Widget>[
-            EndpointDataCard(
-              value: _cases,
-              endpoint: Endpoint.cases,
-            ),
+            for (var endpoint in Endpoint.values)
+              EndpointDataCard(
+                // initally _endpointsData does not have any value
+                value: _endpointsData != null
+                    ? _endpointsData.values[endpoint]
+                    : null,
+                endpoint: endpoint,
+              ),
           ],
         ),
       ),
