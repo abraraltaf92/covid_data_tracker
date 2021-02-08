@@ -31,12 +31,20 @@ class _DashBoardState extends State<DashBoard> {
           title: 'Connection Error',
           content: 'Could not retrieve data. Please try again later.',
           defaultActionText: 'OK');
+    } catch (_) {
+      showAlertDialog(
+          context: context,
+          title: 'Unknown Error',
+          content: 'Please contact support or try again later.',
+          defaultActionText: 'OK');
     }
   }
 
   @override
   void initState() {
     super.initState();
+    final dataRepository = Provider.of<DataRepository>(context, listen: false);
+    _endpointsData = dataRepository.getAllEnpointsCachedData();
     _updateData();
   }
 
@@ -44,7 +52,7 @@ class _DashBoardState extends State<DashBoard> {
   Widget build(BuildContext context) {
     final formatter = LastUpdatedFormatter(
       lastUpdated: _endpointsData != null
-          ? _endpointsData.values[Endpoint.cases].date
+          ? _endpointsData.values[Endpoint.cases]?.date
           : null,
     );
     return Scaffold(
@@ -64,7 +72,7 @@ class _DashBoardState extends State<DashBoard> {
               EndpointCard(
                 // initally _endpointsData does not have any value
                 value: _endpointsData != null
-                    ? _endpointsData.values[endpoint].value
+                    ? _endpointsData.values[endpoint]?.value
                     : null,
                 endpoint: endpoint,
               ),
