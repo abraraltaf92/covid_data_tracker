@@ -1,6 +1,6 @@
 import 'package:covid_data_tracker/app/services/api.dart';
-import 'package:covid_data_tracker/app/services/endpoint_data.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EndpointCardData {
   EndpointCardData({this.title, this.assetName, this.color});
@@ -11,7 +11,7 @@ class EndpointCardData {
 
 class EndpointCard extends StatelessWidget {
   final Endpoint endpoint;
-  final EndpointData value;
+  final int value;
   static Map<Endpoint, EndpointCardData> _cardTitles = {
     Endpoint.cases: EndpointCardData(
         title: 'Cases',
@@ -37,6 +37,13 @@ class EndpointCard extends StatelessWidget {
 
   const EndpointCard({Key key, @required this.endpoint, @required this.value})
       : super(key: key);
+  String get formattedValue {
+    if (value == null) {
+      return '';
+    }
+    return NumberFormat("#,###,###,###,###").format(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cardData = _cardTitles[endpoint];
@@ -69,7 +76,7 @@ class EndpointCard extends StatelessWidget {
                       color: cardData.color,
                     ),
                     Text(
-                      value != null ? value.toString() : '',
+                      formattedValue,
                       style: Theme.of(context).textTheme.headline5.copyWith(
                           color: cardData.color, fontWeight: FontWeight.w500),
                     )

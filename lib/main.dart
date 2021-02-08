@@ -3,10 +3,14 @@ import 'package:covid_data_tracker/app/services/api.dart';
 import 'package:covid_data_tracker/app/services/api_service.dart';
 import 'package:covid_data_tracker/app/ui/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  Intl.defaultLocale = 'en_IN';
   runApp(MyApp());
+  await initializeDateFormatting();
 }
 
 class MyApp extends StatelessWidget {

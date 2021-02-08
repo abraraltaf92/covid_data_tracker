@@ -1,5 +1,6 @@
 import 'package:covid_data_tracker/app/repositories/endpoints_data.dart';
 import 'package:covid_data_tracker/app/services/api.dart';
+import 'package:covid_data_tracker/app/services/endpoint_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:covid_data_tracker/app/services/api_service.dart';
 import 'package:http/http.dart';
@@ -10,11 +11,13 @@ class DataRepository {
   DataRepository({@required this.apiService});
 
   String _accessToken;
-  Future<int> getEndpointData(Endpoint endpoint) async =>
-      await _getDataRefreshingToken(onGetData: () => getEndpointData(endpoint));
+  Future<EndpointData> getEndpointData(Endpoint endpoint) async =>
+      await _getDataRefreshingToken<EndpointData>(
+          onGetData: () => getEndpointData(endpoint));
 
   Future<EndpointsData> getAllEndpointsData() async =>
-      await _getDataRefreshingToken(onGetData: _getAllEndPointsData);
+      await _getDataRefreshingToken<EndpointsData>(
+          onGetData: _getAllEndPointsData);
 
   //Generic function used
   Future<T> _getDataRefreshingToken<T>({Future<T> Function() onGetData}) async {
